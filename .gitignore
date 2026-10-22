@@ -1,0 +1,16 @@
+# أدوات التصميم المحلية
+.taste-skill/
+.impeccable/
+
+# ملفات غير مستخدمة في الصفحات
+assets/credits.json
+assets/photos/credits.json
+assets/brand/iban-qr.svg
+assets/brand/logo-full-green.svg
+assets/img/arar-tower.jpg
+assets/img/first-step.jpg
+assets/img/lens-figure.jpg
+assets/img/plain.jpg
+assets/img/together.jpg
+assets/photos/hands-child.jpg
+assets/photos/spring-purple.jpg
