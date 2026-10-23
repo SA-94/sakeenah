@@ -119,15 +119,6 @@
 .serve-card b { color: var(--ink); }
 
 /* مجلس الإدارة */
-.board-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
-.member { display: grid; justify-items: center; text-align: center; gap: 4px; padding: 30px 18px 26px; border-radius: var(--r-md); background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
-.avatar { display: grid; place-items: center; width: 72px; height: 72px; margin-bottom: 10px; border-radius: 50%; background: var(--mint-100); color: var(--green); font-family: var(--f-head); font-weight: 700; font-size: 26px; }
-.member h3 { font-size: 17px; line-height: 1.5; }
-.member p { font-size: 14px; color: var(--ink-3); }
-.member--lead { background: var(--green); box-shadow: none; }
-.member--lead .avatar { background: var(--gold); color: var(--green-900); }
-.member--lead h3 { color: var(--white); }
-.member--lead p { color: #D7E8DC; }
 
 /* بيانات الجمعية */
 .card-in { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: clamp(40px, 6vw, 80px); }
@@ -163,8 +154,6 @@
   .value:first-child { grid-row: auto; grid-column: 1 / -1; }
   .goals-in { grid-template-columns: 1fr; }
   .goals-head { position: static; }
-  .board-grid { grid-template-columns: repeat(3, 1fr); }
-  .member--lead { grid-column: 1 / -1; }
   .cert { max-width: 640px; }
 }
 
@@ -183,27 +172,11 @@
   .goal-n { width: 38px; height: 38px; font-size: 16px; }
   .goal-t { font-size: 16px; }
   .goal ul { padding: 0 18px 18px; padding-inline-start: 50px; }
-  .board-grid { grid-template-columns: 1fr 1fr; }
   .facts { grid-template-columns: 1fr; }
   .cta-in { text-align: center; justify-content: center; }
   .cta-actions { width: 100%; }
   .cta-actions .btn { flex: 1; }
 }
-
-/* الهيكل التنظيمي */
-.org { display: grid; justify-items: center; }
-.org-node {
-  padding: 14px 26px; border-radius: 16px; background: var(--white);
-  box-shadow: inset 0 0 0 1.5px var(--mint-200); font-family: var(--f-head); font-weight: 600; font-size: 16px; text-align: center;
-}
-.org-node--top { background: var(--green-900); color: var(--white); box-shadow: none; }
-.org-node--board { background: var(--green); color: var(--white); box-shadow: none; }
-.org-node--exec { background: var(--gold); color: var(--green-900); box-shadow: none; }
-.org-line { width: 2px; height: 28px; background: var(--mint-200); }
-.org-branches { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; width: 100%; max-width: 900px; padding-top: 28px; }
-.org-branches::before { content: ""; position: absolute; top: 0; inset-inline: 12.5%; height: 2px; background: var(--mint-200); }
-.org-branches .org-node { position: relative; font-size: 15px; padding: 14px 12px; }
-.org-branches .org-node::before { content: ""; position: absolute; top: -28px; left: 50%; width: 2px; height: 28px; background: var(--mint-200); }
 
 /* مستهدفات 2026 */
 .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
@@ -226,11 +199,121 @@
 @media (max-width: 1024px) {
   .kpis { grid-template-columns: repeat(2, 1fr); }
   .member-in { grid-template-columns: 1fr; }
-  .org-branches { grid-template-columns: repeat(2, 1fr); padding-top: 0; }
-  .org-branches::before, .org-branches .org-node::before { display: none; }
 }
 @media (max-width: 640px) {
   .kpis li { padding: 16px; }
   .kpis b { font-size: 24px; }
-  .org-branches .org-node { font-size: 14px; padding: 12px 8px; }
+}
+
+/* ===== الهيكل التنظيمي (شجرة) ===== */
+.structure { background: var(--green-900); color: var(--white); position: relative; overflow: hidden; }
+.structure::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 50% at 50% 0%, rgba(233, 168, 58, .14), transparent 70%),
+              radial-gradient(40% 40% at 100% 100%, rgba(0, 104, 58, .5), transparent 70%);
+}
+.structure .container { position: relative; }
+.structure h2 { color: var(--white); }
+.structure .section-head--row > p { color: #BFD6C8; }
+.tree { display: grid; justify-items: center; }
+.tier { position: relative; display: grid; justify-items: center; width: 100%; }
+.tier:not(:last-child) { padding-bottom: 40px; }
+.tier:not(:last-child)::after {
+  content: ""; position: absolute; bottom: 0; left: 50%; width: 2px; height: 40px;
+  background: linear-gradient(var(--gold), rgba(233, 168, 58, .35));
+}
+.tnode {
+  display: flex; align-items: center; gap: 16px; min-width: min(380px, 100%); padding: 18px 24px 18px 28px;
+  border-radius: 20px; background: rgba(255, 255, 255, .06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14);
+}
+.tnode h3 { font-size: 19px; color: var(--white); }
+.tnode p { font-size: 14.5px; color: #BFD6C8; }
+.tnode-ic { flex: none; display: grid; place-items: center; width: 50px; height: 50px; border-radius: 15px; background: rgba(255, 255, 255, .1); color: var(--white); }
+.tnode--ga { background: var(--gold); box-shadow: 0 18px 40px -20px rgba(233, 168, 58, .7); }
+.tnode--ga h3 { color: var(--green-900); }
+.tnode--ga p { color: rgba(7, 44, 28, .75); }
+.tnode--ga .tnode-ic { background: rgba(7, 44, 28, .12); color: var(--green-900); }
+.tnode--board { background: var(--green); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18); }
+.tnode--exec { background: var(--white); box-shadow: 0 18px 40px -22px rgba(0, 0, 0, .6); }
+.tnode--exec h3 { color: var(--green-900); }
+.tnode--exec p { color: var(--green); font-weight: 600; }
+.tnode--exec .tnode-ic { background: var(--mint-100); color: var(--green); }
+
+.units { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; padding-top: 40px; }
+.units::before { content: ""; position: absolute; top: 0; inset-inline: 12.5%; height: 2px; background: rgba(233, 168, 58, .45); }
+.unit {
+  position: relative; display: grid; gap: 4px; align-content: start; padding: 22px 20px;
+  border-radius: 18px; background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+}
+.unit::before { content: ""; position: absolute; top: -40px; left: 50%; width: 2px; height: 40px; background: rgba(233, 168, 58, .45); }
+.unit-ic { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 8px; border-radius: 13px; background: rgba(233, 168, 58, .16); color: var(--gold); }
+.unit h4 { font-size: 16.5px; color: var(--white); }
+.unit-person { font-weight: 600; font-size: 15px; color: var(--gold); }
+.unit-role { font-size: 14px; line-height: 1.7; color: #BFD6C8; }
+
+/* ===== فريق العمل ===== */
+.team-label { display: flex; align-items: center; gap: 12px; margin: 8px 0 18px; font-size: 18px; color: var(--green-800); }
+.team-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.team-exec { margin-top: 0; }
+.team-board + .team-label { margin-top: 48px; }
+.team-board, .team-exec { display: grid; grid-template-columns: .9fr 1.1fr; gap: 16px; align-items: stretch; }
+.mono {
+  flex: none; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
+  background: var(--mint-100); color: var(--green); font: 700 22px/1 var(--f-head);
+  box-shadow: 0 0 0 4px var(--white), 0 0 0 5px var(--mint-200);
+}
+.mono--lg { width: 76px; height: 76px; font-size: 30px; background: var(--gold); color: var(--green-900); box-shadow: 0 0 0 5px rgba(255, 255, 255, .12), 0 0 0 6px rgba(233, 168, 58, .5); }
+.lead-card, .exec-card {
+  position: relative; overflow: hidden; display: grid; align-content: start; gap: 6px; padding: 32px;
+  border-radius: var(--r-lg); background: var(--green-900); color: var(--white);
+}
+.lead-card::after, .exec-card::after {
+  content: ""; position: absolute; inset-inline-end: -60px; bottom: -60px; width: 220px; height: 220px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(233, 168, 58, .22), transparent 70%); pointer-events: none;
+}
+.lead-card .mono { margin-bottom: 14px; }
+.lead-role { font-size: 14px; font-weight: 600; color: var(--gold); }
+.lead-card h4, .exec-card h4 { font-size: 22px; line-height: 1.45; color: var(--white); }
+.lead-note { margin-top: 6px; font-size: 15px; line-height: 1.8; color: #BFD6C8; max-width: 26em; }
+.people { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.person {
+  display: flex; align-items: center; gap: 16px; padding: 22px; border-radius: var(--r-md);
+  background: var(--white); box-shadow: inset 0 0 0 1px var(--line); transition: box-shadow .25s, transform .25s var(--ease);
+}
+.person:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--mint-200); }
+.person h4 { font-size: 16px; line-height: 1.5; }
+.person p { font-size: 14px; color: var(--ink-3); }
+.since { display: inline-block; margin-top: 6px; padding: 2px 10px; border-radius: 99px; background: var(--mint-50); color: var(--green); font-size: 12.5px; font-weight: 600; }
+.exec-card { gap: 22px; align-content: space-between; }
+.exec-who { display: flex; align-items: center; gap: 18px; }
+.exec-card .since { background: rgba(255, 255, 255, .1); color: #D7E8DC; }
+.exec-contact { position: relative; z-index: 1; display: grid; gap: 8px; }
+.exec-contact a {
+  display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 14px;
+  background: rgba(255, 255, 255, .08); color: var(--white); font-size: 15px; transition: background-color .2s;
+}
+.exec-contact a:hover { background: rgba(255, 255, 255, .16); }
+.exec-contact .ic { color: var(--gold); }
+.people--staff { grid-template-columns: 1fr; }
+
+@media (max-width: 1024px) {
+  .units { grid-template-columns: repeat(2, 1fr); padding-top: 0; }
+  .units::before, .unit::before { display: none; }
+  .team-board, .team-exec { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .tier:not(:last-child) { padding-bottom: 28px; }
+  .tier:not(:last-child)::after { height: 28px; }
+  .tnode { width: 100%; min-width: 0; padding: 16px 18px; }
+  .tnode h3 { font-size: 17px; }
+  .units { grid-template-columns: 1fr; gap: 10px; }
+  .unit { padding: 18px; }
+  .people { grid-template-columns: 1fr; gap: 10px; }
+  .person { padding: 16px; }
+  .lead-card, .exec-card { padding: 24px; }
+  .lead-card h4, .exec-card h4 { font-size: 19px; }
+  .exec-contact a { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .person { transition: none; }
 }
