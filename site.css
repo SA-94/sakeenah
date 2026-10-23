@@ -1,7 +1,8 @@
 /* ===== أنماط مشتركة لصفحات الموقع المقسّمة ===== */
 
 /* القائمة: الأيقونات والروابط الإضافية تظهر في قائمة الجوال فقط */
-.nav > a .ic, .nav > .nav-extra, .nav-contact, .mbar { display: none; }
+.nav > a .ic, .nav > .nav-extra, .nav-contact { display: none; }
+@media (min-width: 1025px) { .nav > a.nav-home { display: none; } }
 
 /* رأس الصفحات الداخلية */
 .phero {
@@ -37,6 +38,25 @@
 .service--info:hover { transform: none; box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--line); }
 .service--info:hover .service-ic { background: var(--mint-100); color: var(--accent); }
 
+/* عناوين في المنتصف */
+.section-head--center { margin-inline: auto; text-align: center; }
+.section-head--center .kicker { justify-content: center; }
+
+/* ما نقدّمه: قسم مستقل بمسافته */
+.services--home { margin-top: 0; }
+.hero { padding-bottom: clamp(48px, 6vw, 80px); }
+.hero + .services--home { padding-top: clamp(48px, 6vw, 80px); }
+
+/* أثرنا في 2025: قسم فاتح قبل دعوة التبرع */
+.stats--light { background: var(--surface); color: var(--ink); padding-block: clamp(56px, 7vw, 96px) clamp(40px, 5vw, 64px); }
+.stats--light::before { display: none; }
+.stats--light .section-head { margin-bottom: 32px; }
+.stats--light .stats-grid { gap: 14px; }
+.stats--light .stats-grid li { padding: 26px 16px; border-radius: var(--r-md); background: var(--mint-50); }
+.stats--light .stats-grid li + li { border-inline-start: 0; }
+.stats--light .stats-grid b { color: var(--accent); }
+.stats--light .stats-grid span { color: var(--ink-2); }
+
 /* صفحة الخدمات */
 .services--page { margin-top: 0; padding-block: clamp(48px, 6vw, 80px) 0; }
 
@@ -71,14 +91,14 @@
 .cinfo-item--alert .ccard-ic { background: var(--sand-100); color: var(--brown); }
 
 @media (max-width: 1024px) {
+  .header-actions .btn--gold-soft { display: inline-flex; }
   .xgrid, .cgrid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ===== الجوال ===== */
 @media (max-width: 768px) {
-  .topbar, .wa-float { display: none; }
-  .header-actions .btn--primary { display: none; }
   .header-in { min-height: 66px; }
+  .header-actions .btn--gold-soft { min-height: 42px; padding: 0 18px; font-size: 14.5px; }
 
   /* القائمة بكامل الشاشة */
   .nav {
@@ -101,8 +121,6 @@
   }
   .menu-open { overflow: hidden; }
 
-  /* شريط الإجراءات السفلي */
-  .footer-bottom { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
   .donate--page .card-stage { order: 0; }
   .gtabs { display: grid; grid-template-columns: 1fr 1fr; }
   .gtab { padding: 10px 8px; white-space: normal; }
@@ -110,25 +128,9 @@
   .gov-docs .gtabs { grid-template-columns: repeat(3, 1fr); }
   .gov-docs .gtab-n { display: none; }
   #tab-assembly, #tab-board { grid-column: 1 / -1; }
-  .mbar {
-    position: fixed; inset: auto 0 0 0; z-index: 90; display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 8px; align-items: center;
-    padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
-    background: rgba(255, 255, 255, .97); border-top: 1px solid var(--line); box-shadow: 0 -10px 30px -20px rgba(7, 44, 28, .35);
-  }
-  .mbar-item {
-    display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 4px; border-radius: 14px;
-    font-size: 12.5px; font-weight: 600; color: var(--ink-2);
-  }
-  .mbar-item .ic { width: 22px; height: 22px; color: var(--accent); }
-  .mbar-item.is-on { color: var(--accent); background: var(--mint-50); }
-  .mbar-item--main {
-    flex-direction: row; justify-content: center; gap: 8px; min-height: 50px; border-radius: 16px;
-    background: var(--green); color: var(--white); font-size: 15px; box-shadow: 0 10px 20px -12px rgba(0, 104, 58, .8);
-  }
-  .mbar-item--main .ic { color: var(--white); }
 
   /* الرئيسية: صورة الواجهة أقصر */
-  .hero { padding-bottom: 96px; }
+  .hero { padding-bottom: 40px; }
   .hero-media { width: min(100%, 360px); }
   .hero-photo { aspect-ratio: 5 / 4; border-radius: 160px 28px 160px 28px; }
   .float-card--stat { display: none; }
@@ -231,8 +233,6 @@
 [data-theme="dark"] .btn--gold-soft,
 [data-theme="dark"] .float-ic,
 [data-theme="dark"] .news-date { background: var(--sand-100); }
-[data-theme="dark"] .mbar { background: rgba(14, 26, 20, .97); }
 [data-theme="dark"] .gtab[aria-selected="true"] { background: var(--mint-200); }
 [data-theme="dark"] .cert img, [data-theme="dark"] .hero-photo { filter: brightness(.92); }
-.breathe + .cta-band { padding-top: clamp(56px, 7vw, 96px); }
 [data-theme="dark"] .burger span { background: var(--accent-strong); }
