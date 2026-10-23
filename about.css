@@ -189,3 +189,48 @@
   .cta-actions { width: 100%; }
   .cta-actions .btn { flex: 1; }
 }
+
+/* الهيكل التنظيمي */
+.org { display: grid; justify-items: center; }
+.org-node {
+  padding: 14px 26px; border-radius: 16px; background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--mint-200); font-family: var(--f-head); font-weight: 600; font-size: 16px; text-align: center;
+}
+.org-node--top { background: var(--green-900); color: var(--white); box-shadow: none; }
+.org-node--board { background: var(--green); color: var(--white); box-shadow: none; }
+.org-node--exec { background: var(--gold); color: var(--green-900); box-shadow: none; }
+.org-line { width: 2px; height: 28px; background: var(--mint-200); }
+.org-branches { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; width: 100%; max-width: 900px; padding-top: 28px; }
+.org-branches::before { content: ""; position: absolute; top: 0; inset-inline: 12.5%; height: 2px; background: var(--mint-200); }
+.org-branches .org-node { position: relative; font-size: 15px; padding: 14px 12px; }
+.org-branches .org-node::before { content: ""; position: absolute; top: -28px; left: 50%; width: 2px; height: 28px; background: var(--mint-200); }
+
+/* مستهدفات 2026 */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.kpis li { display: grid; gap: 2px; padding: 22px; border-radius: var(--r-md); background: var(--mint-50); }
+.kpis b { font-family: var(--f-head); font-size: 30px; color: var(--green); line-height: 1.3; }
+.kpis span { font-size: 15px; color: var(--ink-2); }
+
+/* العضوية */
+.member-in { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+.member-text { display: grid; gap: 16px; justify-items: start; }
+.member-text > p:not(.kicker) { color: var(--ink-2); font-size: 18px; max-width: 30em; }
+.member-cards { display: grid; gap: 14px; }
+.member-card { padding: 24px 26px; border-radius: var(--r-md); background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
+.member-card h3 { margin-bottom: 10px; color: var(--green-800); }
+.member-card ul { display: grid; gap: 8px; }
+.member-card li { position: relative; padding-inline-start: 18px; font-size: 15.5px; line-height: 1.8; color: var(--ink-2); }
+.member-card li::before { content: ""; position: absolute; inset-inline-start: 0; top: .78em; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.member-card b { color: var(--ink); }
+
+@media (max-width: 1024px) {
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .member-in { grid-template-columns: 1fr; }
+  .org-branches { grid-template-columns: repeat(2, 1fr); padding-top: 0; }
+  .org-branches::before, .org-branches .org-node::before { display: none; }
+}
+@media (max-width: 640px) {
+  .kpis li { padding: 16px; }
+  .kpis b { font-size: 24px; }
+  .org-branches .org-node { font-size: 14px; padding: 12px 8px; }
+}
