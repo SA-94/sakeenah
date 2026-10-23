@@ -133,7 +133,6 @@
   .hero { padding-bottom: 40px; }
   .hero-media { width: min(100%, 360px); }
   .hero-photo { aspect-ratio: 5 / 4; border-radius: 160px 28px 160px 28px; }
-  .float-card--stat { display: none; }
 
   /* الفوتر: الروابط في عمودين */
   .footer-in { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
