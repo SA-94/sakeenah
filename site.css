@@ -4,6 +4,17 @@
 .nav > a .ic, .nav > .nav-extra, .nav-contact { display: none; }
 @media (min-width: 1025px) { .nav > a.nav-home { display: none; } }
 
+/* ترتيب الرأس: الشعار يمين، الروابط في المنتصف بمسافات مريحة، والأزرار في الطرف الأيسر */
+@media (min-width: 1025px) {
+  .nav { margin-inline: auto; gap: 6px; }
+  .nav > a { padding: 10px 16px; font-size: 15.5px; }
+  .header-actions { gap: 12px; padding-inline-start: 22px; border-inline-start: 1px solid var(--line); }
+}
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .nav { gap: 2px; }
+  .nav > a { padding: 10px 11px; font-size: 15px; }
+}
+
 /* رأس الصفحات الداخلية */
 .phero {
   padding-block: clamp(36px, 5vw, 64px) clamp(32px, 4vw, 52px);
@@ -92,6 +103,7 @@
 
 @media (max-width: 1024px) {
   .header-actions .btn--gold-soft { display: inline-flex; }
+  .header-actions { margin-inline-start: auto; gap: 10px; }
   .xgrid, .cgrid { grid-template-columns: repeat(2, 1fr); }
 }
 
