@@ -250,4 +250,98 @@
     const fromHash = document.getElementById('tab-' + location.hash.slice(1));
     if (fromHash) select(fromHash);
   }
+
+  // عارض الوثائق داخل الصفحة (PDF.js يُحمَّل عند أول فتح فقط)
+  const viewer = document.querySelector('.viewer');
+  if (viewer && typeof viewer.showModal === 'function') {
+    const CDN = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/';
+    const body = viewer.querySelector('.viewer-body');
+    const info = viewer.querySelector('.viewer-info');
+    let lib, task, io, opener, token = 0;
+
+    const loadLib = () => lib ? Promise.resolve(lib) : new Promise((ok, fail) => {
+      const s = document.createElement('script');
+      s.src = CDN + 'build/pdf.min.js';
+      s.onload = () => { lib = window.pdfjsLib; lib.GlobalWorkerOptions.workerSrc = CDN + 'build/pdf.worker.min.js'; ok(lib); };
+      s.onerror = fail;
+      document.head.append(s);
+    });
+
+    const renderPage = async (pdf, el, my) => {
+      const page = await pdf.getPage(+el.dataset.n);
+      if (my !== token) return;
+      const base = page.getViewport({ scale: 1 });
+      const vp = page.getViewport({ scale: (el.clientWidth / base.width) * Math.min(window.devicePixelRatio || 1, 2) });
+      const c = document.createElement('canvas');
+      c.width = vp.width; c.height = vp.height;
+      c.setAttribute('role', 'img');
+      c.setAttribute('aria-label', 'صفحة ' + el.dataset.n);
+      await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+      if (my === token) el.append(c);
+    };
+
+    const fail = (url) => {
+      body.innerHTML = '';
+      const p = document.createElement('p');
+      p.className = 'viewer-msg';
+      p.innerHTML = 'تعذّر عرض الوثيقة هنا. <a target="_blank" rel="noopener">افتحها في نافذة جديدة</a>';
+      p.querySelector('a').href = url;
+      body.append(p);
+    };
+
+    const open = async (url, title) => {
+      const my = ++token;
+      viewer.querySelector('#viewer-title').textContent = title;
+      viewer.querySelector('.viewer-open').href = url;
+      viewer.querySelector('.viewer-dl').href = url;
+      info.textContent = '';
+      body.innerHTML = '<p class="viewer-msg">جارٍ تحميل الوثيقة…</p>';
+      viewer.showModal();
+      document.documentElement.classList.add('viewer-on');
+      try {
+        const pdfjs = await loadLib();
+        task = pdfjs.getDocument({ url, cMapUrl: CDN + 'cmaps/', cMapPacked: true, standardFontDataUrl: CDN + 'standard_fonts/' });
+        const pdf = await task.promise;
+        if (my !== token) return;
+        const first = (await pdf.getPage(1)).getViewport({ scale: 1 });
+        const n = pdf.numPages;
+        info.textContent = n === 1 ? 'صفحة واحدة' : n === 2 ? 'صفحتان' : n + (n <= 10 ? ' صفحات' : ' صفحة');
+        body.innerHTML = '';
+        io = new IntersectionObserver((entries) => entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          io.unobserve(en.target);
+          renderPage(pdf, en.target, my).catch(() => {});
+        }), { root: body, rootMargin: '800px 0px' });
+        for (let n = 1; n <= pdf.numPages; n++) {
+          const el = document.createElement('div');
+          el.className = 'viewer-page';
+          el.dataset.n = n;
+          el.style.aspectRatio = first.width + ' / ' + first.height;
+          body.append(el);
+          io.observe(el);
+        }
+        body.scrollTop = 0;
+      } catch (err) {
+        if (my === token) fail(url);
+      }
+    };
+
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('[data-view]');
+      if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      opener = a;
+      open(a.getAttribute('href'), a.dataset.title || a.textContent.trim());
+    });
+    viewer.querySelector('.viewer-close').addEventListener('click', () => viewer.close());
+    viewer.addEventListener('click', (e) => { if (e.target === viewer) viewer.close(); });
+    viewer.addEventListener('close', () => {
+      token++;
+      if (io) io.disconnect();
+      if (task) task.destroy();
+      body.innerHTML = '';
+      document.documentElement.classList.remove('viewer-on');
+      if (opener) opener.focus();
+    });
+  }
 })();
