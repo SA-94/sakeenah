@@ -8,6 +8,24 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  // الوضع الليلي والنهاري
+  const themeBtn = document.querySelector('.theme-toggle');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const applyTheme = (t) => {
+    document.documentElement.setAttribute('data-theme', t);
+    if (themeBtn) {
+      themeBtn.setAttribute('aria-pressed', String(t === 'dark'));
+      themeBtn.setAttribute('aria-label', t === 'dark' ? 'تفعيل الوضع النهاري' : 'تفعيل الوضع الليلي');
+    }
+    if (themeMeta) themeMeta.setAttribute('content', t === 'dark' ? '#0E1A14' : '#00683A');
+  };
+  applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+  if (themeBtn) themeBtn.addEventListener('click', () => {
+    const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(t);
+    try { localStorage.setItem('theme', t); } catch (e) { /* التخزين غير متاح: يبقى الاختيار لهذه الزيارة */ }
+  });
+
   // قائمة الجوال
   const burger = document.querySelector('.burger');
   const nav = document.getElementById('nav');
