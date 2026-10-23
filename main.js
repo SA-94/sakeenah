@@ -222,4 +222,32 @@
       });
     }
   }
+
+  // تبويبات صفحة الحوكمة (مع دعم الرابط المباشر مثل governance.html#reports)
+  const tablist = document.querySelector('.gtabs');
+  if (tablist) {
+    const tabs = [...tablist.querySelectorAll('[role="tab"]')];
+    const select = (tab, focus) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', on);
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (focus) tab.focus();
+      history.replaceState(null, '', '#' + tab.id.slice(4));
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t));
+      t.addEventListener('keydown', (e) => {
+        // RTL: السهم الأيسر يتقدم
+        const step = { ArrowLeft: 1, ArrowRight: -1 }[e.key];
+        if (step) { e.preventDefault(); select(tabs[(i + step + tabs.length) % tabs.length], true); }
+        if (e.key === 'Home') { e.preventDefault(); select(tabs[0], true); }
+        if (e.key === 'End') { e.preventDefault(); select(tabs[tabs.length - 1], true); }
+      });
+    });
+    const fromHash = document.getElementById('tab-' + location.hash.slice(1));
+    if (fromHash) select(fromHash);
+  }
 })();
