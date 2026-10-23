@@ -32,6 +32,11 @@
 .xcard:hover .xcard-go { opacity: 1; transform: translateX(-4px); }
 .explore { padding-top: clamp(56px, 7vw, 96px); }
 
+/* ما نقدّمه في الرئيسية: بطاقات تعريفية بلا روابط */
+.services--home .services-grid { grid-template-columns: repeat(3, 1fr); }
+.service--info:hover { transform: none; box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--line); }
+.service--info:hover .service-ic { background: var(--mint-100); color: var(--accent); }
+
 /* صفحة الخدمات */
 .services--page { margin-top: 0; padding-block: clamp(48px, 6vw, 80px) 0; }
 
@@ -150,11 +155,11 @@
   .kpis--3 span { font-size: 12.5px; line-height: 1.5; }
 
   /* اختصار الأقسام الطويلة على الجوال */
-  .services:not(.services--page) .services-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .services:not(.services--page) .service { display: block; padding: 16px; }
-  .services:not(.services--page) .service-ic { width: 44px; height: 44px; margin-bottom: 10px; }
-  .services:not(.services--page) .service h3 { font-size: 16px; margin: 0; }
-  .services:not(.services--page) .service p { display: none; }
+  .services--home .services-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .services--home .service { display: block; padding: 14px 10px; text-align: center; }
+  .services--home .service-ic { width: 42px; height: 42px; margin: 0 auto 8px; }
+  .services--home .service h3 { font-size: 14.5px; line-height: 1.5; margin: 0; }
+  .services--home .service p { display: none; }
   .values-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .value { padding: 16px; }
   .value:first-child { grid-column: 1 / -1; }
