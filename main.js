@@ -14,6 +14,7 @@
   if (burger && nav) {
     const setOpen = (open) => {
       nav.classList.toggle('is-open', open);
+      document.documentElement.classList.toggle('menu-open', open);
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'إغلاق القائمة' : 'فتح القائمة');
     };
@@ -175,7 +176,12 @@
     }
   };
   purposes.forEach((b) => b.addEventListener('click', () => setPurpose(b.textContent.trim())));
-  if (purposes.length) setPurpose(purposes[0].textContent.trim());
+  if (purposes.length) {
+    // donate.html?purpose=... يختار المجال القادم من صفحة أخرى
+    const wanted = new URLSearchParams(location.search).get('purpose');
+    const match = purposes.find((b) => b.textContent.trim() === wanted);
+    setPurpose((match || purposes[0]).textContent.trim());
+  }
   document.querySelectorAll('[data-purpose]').forEach((a) => {
     a.addEventListener('click', () => setPurpose(a.dataset.purpose));
   });
@@ -223,9 +229,8 @@
     }
   }
 
-  // تبويبات صفحة الحوكمة (مع دعم الرابط المباشر مثل governance.html#reports)
-  const tablist = document.querySelector('.gtabs');
-  if (tablist) {
+  // التبويبات (تدعم أكثر من مجموعة في الصفحة، والرابط المباشر مثل governance.html#reports)
+  document.querySelectorAll('.gtabs').forEach((tablist) => {
     const tabs = [...tablist.querySelectorAll('[role="tab"]')];
     const select = (tab, focus) => {
       tabs.forEach((t) => {
@@ -248,8 +253,11 @@
       });
     });
     const fromHash = document.getElementById('tab-' + location.hash.slice(1));
-    if (fromHash) select(fromHash);
-  }
+    if (fromHash && tabs.includes(fromHash)) {
+      select(fromHash);
+      tablist.scrollIntoView({ block: 'start' });
+    }
+  });
 
   // عارض الوثائق داخل الصفحة (PDF.js يُحمَّل عند أول فتح فقط)
   const viewer = document.querySelector('.viewer');
