@@ -270,11 +270,23 @@
         if (e.key === 'End') { e.preventDefault(); select(tabs[tabs.length - 1], true); }
       });
     });
-    const fromHash = document.getElementById('tab-' + location.hash.slice(1));
-    if (fromHash && tabs.includes(fromHash)) {
-      select(fromHash);
-      tablist.scrollIntoView({ block: 'start' });
-    }
+    // يفتح التبويب من الرابط عند التحميل، وعند الضغط على رابط داخل نفس الصفحة (مثل روابط الفوتر)
+    const openFromHash = () => {
+      const t = document.getElementById('tab-' + location.hash.slice(1));
+      if (t && tabs.includes(t)) {
+        select(t);
+        tablist.scrollIntoView({ block: 'start' });
+      }
+    };
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+    // رابط لنفس التبويب المفتوح لا يغيّر العنوان، فنرجع للتبويبات يدويًا
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href*="#"]');
+      if (!a || a.pathname !== location.pathname || a.hash !== location.hash) return;
+      const t = document.getElementById('tab-' + a.hash.slice(1));
+      if (t && tabs.includes(t)) { e.preventDefault(); openFromHash(); }
+    });
   });
 
   // عارض الوثائق داخل الصفحة (PDF.js يُحمَّل عند أول فتح فقط)
