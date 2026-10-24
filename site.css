@@ -44,19 +44,11 @@
 .xcard:hover .xcard-go { opacity: 1; transform: translateX(-4px); }
 .explore { padding-top: clamp(56px, 7vw, 96px); }
 
-/* ما نقدّمه في الرئيسية: بطاقات تعريفية بلا روابط */
-.services--home .services-grid { grid-template-columns: repeat(3, 1fr); }
-.service--info:hover { transform: none; box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--line); }
-.service--info:hover .service-ic { background: var(--mint-100); color: var(--accent); }
-
 /* عناوين في المنتصف */
 .section-head--center { margin-inline: auto; text-align: center; }
 .section-head--center .kicker { justify-content: center; }
 
-/* ما نقدّمه: قسم مستقل بمسافته */
-.services--home { margin-top: 0; }
 .hero { padding-bottom: clamp(48px, 6vw, 80px); }
-.hero + .services--home { padding-top: clamp(48px, 6vw, 80px); }
 
 /* أثرنا في 2025: قسم فاتح قبل دعوة التبرع */
 .stats--light { background: var(--surface); color: var(--ink); padding-block: clamp(56px, 7vw, 96px) clamp(40px, 5vw, 64px); }
@@ -67,9 +59,6 @@
 .stats--light .stats-grid li + li { border-inline-start: 0; }
 .stats--light .stats-grid b { color: var(--accent); }
 .stats--light .stats-grid span { color: var(--ink-2); }
-
-/* صفحة الخدمات */
-.services--page { margin-top: 0; padding-block: clamp(48px, 6vw, 80px) 0; }
 
 /* صفحة التبرع */
 .donate--page { padding-block: clamp(40px, 6vw, 88px); }
@@ -168,11 +157,6 @@
   .kpis--3 span { font-size: 12.5px; line-height: 1.5; }
 
   /* اختصار الأقسام الطويلة على الجوال */
-  .services--home .services-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .services--home .service { display: block; padding: 14px 10px; text-align: center; }
-  .services--home .service-ic { width: 42px; height: 42px; margin: 0 auto 8px; }
-  .services--home .service h3 { font-size: 14.5px; line-height: 1.5; margin: 0; }
-  .services--home .service p { display: none; }
   .values-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .value { padding: 16px; }
   .value:first-child { grid-column: 1 / -1; }
